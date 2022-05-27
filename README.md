@@ -25,6 +25,10 @@ There is a file `/tcpdump.pcap` getting larger over time as long as the `tcpdump
 2. To start, execute the script `Start.ps1`.
 3. To stop, execute the script `Stop.ps1`
 
+# Next
+
+- [ ] Create my own docker image of tcpdump.
+
 # Reference
 
 https://hub.docker.com/r/kaazing/tcpdump \
