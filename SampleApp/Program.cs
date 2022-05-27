@@ -19,11 +19,6 @@ namespace SampleApp
     {
         static void Main(string[] args)
         {
-
-        }
-
-        static void TestConnect()
-        {
             var webClient = new WebClient();
 
             while (true)
@@ -35,45 +30,12 @@ namespace SampleApp
 
                     Thread.Sleep(10000);
 
-                    webContent = webClient.DownloadString("http://gamevn.com/");
-                    Console.WriteLine($"{DateTime.Now} Gamevn");
-
-                    Thread.Sleep(10000);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception occured. Message: {ex.ToString().Substring(0, (ex.ToString().Length > 15) ? 15 : ex.ToString().Length)}");
                 }
 
-            }
-        }
-
-        static async Task TestSomethingElseAsync()
-        {
-            //https://stackoverflow.com/questions/15270764/get-ssl-certificate-in-net
-
-            var handler = new HttpClientHandler
-            {
-                UseDefaultCredentials = true,
-
-                ServerCertificateCustomValidationCallback = (sender, cert, chain, error) =>
-                {
-
-                    /// Access cert object.
-
-                    return true;
-                }
-            };
-
-            using (HttpClient client = new HttpClient(handler))
-            {
-                using (HttpResponseMessage response = await client.GetAsync("https://mail.google.com"))
-                {
-                    using (HttpContent content = response.Content)
-                    {
-
-                    }
-                }
             }
         }
     }

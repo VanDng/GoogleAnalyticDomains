@@ -36,19 +36,14 @@ namespace WiresharkFeeder
 
             _streamLocker = new object();
             
-            IntializeFileReader();
+            TryCreateOrClearFile();
+            InitializeFileReader();
 
             _cancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = _cancellationTokenSource.Token;
 
             _taskWriteHandleChecking = new Task(WriteHandleChecking, _cancellationToken, TaskCreationOptions.LongRunning);
             _taskWriteHandleChecking.Start();
-        }
-
-        private void IntializeFileReader()
-        {
-            TryCreateOrClearFile();
-            InitializeFileReader();
         }
 
         private void InitializeFileReader()
@@ -110,7 +105,7 @@ namespace WiresharkFeeder
                 //}
                 isWriteHandleReleased = true;
             }
-            catch (IOException)
+            catch
             {
                 isWriteHandleReleased = false;
             }
@@ -137,6 +132,12 @@ namespace WiresharkFeeder
             {
                 try
                 {
+                    var dirPath = Path.GetDirectoryName(_filePath);
+                    if (!Directory.Exists(dirPath))
+                    {
+                        Directory.CreateDirectory(dirPath);
+                    }
+
                     File.Create(_filePath).Close();
                 }
                 catch
