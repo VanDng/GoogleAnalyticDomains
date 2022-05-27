@@ -10,26 +10,30 @@ This repository demontrates how to setup a local environment to capture the Dock
 ![General.png](./Doc/general.png)
 
 ### The upside
-1. I pull a tcpdump image from [`kaazing/tcpdump`](https://hub.docker.com/r/kaazing/tcpdump), start a container and then connect it to the target container with [`container` network mode](https://docs.docker.com/engine/reference/run/). By doing that, it helps to not capture packets not relating to the target container.
-2. I create a console application `Wireshark Feeder` which forward packets from the file `/tcpdump.pcap` to [`Wireshark`](https://www.wireshark.org/) via [named pipe](https://wiki.wireshark.org/CaptureSetup/Pipes.md), so I can view packets on Wireshark in realtime.
+1. The target container connects to a user-defined network. It isolates the target container's network traffic.
+2. Another container built from [`kaazing/tcpdump`](https://hub.docker.com/r/kaazing/tcpdump) connects to the target container with [`container` network mode](https://docs.docker.com/engine/reference/run/). By doing that, it helps to not capture packets not relating to the target container.
+3. A console application `Wireshark Feeder` forwards packets from the file `/tcpdump.pcap` to [`Wireshark`](https://www.wireshark.org/) via [named pipe](https://wiki.wireshark.org/CaptureSetup/Pipes.md), so I can view packets on Wireshark in **realtime**.
 
-Actually, Wireshark can directly open the file `/tcpdump.pcap` but then it will not be refreshing automatically to follow to packets being captured by tcpdump. Moreover, I want to explore the ability of feeding packets to Wireshark over named pipe. That's why I made up this repository.
+Actually, Wireshark can directly open the file `/tcpdump.pcap` but then it will not be refreshing automatically to follow to packets being captured by tcpdump. Moreover, I want to explore the ability of feeding packets to Wireshark over named pipe. 
 
 ### The downside
 There is a file `/tcpdump.pcap` getting larger over time as long as the `tcpdump container` runs.
 
 # How to run it?
 
-```
-docket network create network-analysis
+1. Download and install necessary programs: [Wireshark](https://www.wireshark.org/download.html), [Docker](https://www.docker.com/products/docker-desktop/), [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0).
+2. To start, execute the script `Start.ps1`.
+3. To stop, execute the script `Stop.ps1`
 
-docker build --progress=plain --no-cache -t sample-app -f Dockerfile .
-docker run -it --name sample-app-container --network network-analysis --rm sample-app  
+# Next
 
-docker run --name tcpdump -d --rm --net container:sample-app-container -v $PWD/Docker_TCPDump:/tcpdump kaazing/tcpdump:latest -vv -i any -w /tcpdump/tcpdump.pcap -U --immediate-mode
-```
+- [ ] Create my own docker image of tcpdump.
 
 # Reference
 
-
-https://github.com/kaazing/dockerfiles/blob/master/tcpdump/Dockerfile
+https://hub.docker.com/r/kaazing/tcpdump \
+https://wiki.wireshark.org/CaptureSetup/Pipes \
+https://www.tcpdump.org/manpages/tcpdump.1.html \
+https://gist.github.com/unitycoder/a82365a93c9992f7f9631741fe007e9d \
+https://docs.docker.com/engine/reference/run/ \
+https://community.pivotal.io/s/article/Explaining-Four-Basic-Modes-of-Docker-Network?language=en_US
