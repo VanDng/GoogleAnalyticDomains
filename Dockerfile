@@ -3,8 +3,8 @@ WORKDIR /app
 COPY ../SampleApp/. ./
 RUN ls -la
 
-RUN dotnet restore
-RUN dotnet publish -c Release -o out
+RUN dotnet restore SampleApp.csproj
+RUN dotnet publish SampleApp.csproj -c Release -o out
 
 WORKDIR /app/out
 RUN ls -la
