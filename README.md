@@ -29,6 +29,14 @@ There is a file `/tcpdump.pcap` getting larger over time as long as the `tcpdump
 
 - [ ] Create my own docker image of tcpdump.
 
+# Side notes
+
+1. Visually config Wireshark to capture a named pipe.
+![wireshark-capture-pipe](./Doc/wire_capture_pipe.png)
+
+2. Enable resolve host name in Wireshark.
+![wireshark-resolve-name](./Doc/wireshark_resolve_name.png)
+
 # Reference
 
 https://hub.docker.com/r/kaazing/tcpdump \
